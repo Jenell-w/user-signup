@@ -2,23 +2,48 @@
 
 {% block content %}
       <h1>Sign Up</h1>
-      <form method='post'>
+      <form method='post'>  <!--create form with PoST method-->
           <label>
               Username:
               <input type='text' name="username"/>
           </label><br>
+          {% if username == "" %}  <!--if username is blank, then display username_error-->
+          <p class="error">{{username_error}}</p>
+          {% endif %}
+
           <label>
             Password:
             <input type='password' name="password"/>
         </label><br>
+        
+        {% if password == "" %}  <!--if password is blank, then display password_error-->
+        <p class="error">{{password_error}}</p>
+        {% endif %}
+
+        {% if (password|length < 3) or
+              (if password|length > 20) %}  <!--if password length is less than 3 char 
+                or more than 20 char (unsure of syntax here), then display password_error2-->
+           <p class="error">{{password_error2}}</p>
+           {% endif %}
+        
         <label>
             Verify Password:
-            <input type='password' name="verify-password"/>
+            <input type='password' name="verify_password"/>
         </label><br>
+
+        {% if password != verify_password %} <!--if pwd doesn't match verify pwd, 
+            then display username_error-->
+        <p class="error">{{verify_password_error}}</p>
+        {% endif %}
+
         <label>
             Email (optional):
             <input type='text' name="email"/>
         </label><br><br>
+        {% if email|length < 3 or email|length > 20 %}
+        <p class="error">{{email_error}}</p>
+        {% endif %}
+        
             <input type="submit" />
       </form>
 {% endblock %}
