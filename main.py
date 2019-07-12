@@ -14,6 +14,11 @@ verify_password = ''
 email = ''
 email_error = ''
 
+def validate_password_length(password):
+  if password == '' or len(password) < 3 or len(password) > 20:
+      return False
+  return True
+
 @app.route('/')
 def display():
   return render_template('signup-no-errors.html', username=username, password=password, 
@@ -31,14 +36,9 @@ def get_user_info():
     username_error = "Please enter a username"
     username = ''
     return render_template('signup.html', username_error=username_error)
-  
-  if password == '':
-    password_error = "Please enter a password between 3 and 20 characters."
-    if len(password) < 3:
-      password_error = "Please enter a password between 3 and 20 characters."  
-      if len(password) > 20:
-        password_error = "Please enter a password between 3 and 20 characters."
-    return render_template('signup.html', password_error=password_error)
+ 
+  if not validate_password_length(password):
+      return render_template('signup.html', verify_password_error="Please enter a password between 3 and 20 characters.")
   
   if (password != verify_password):
     verify_password_error = "Passwords do not match, please try again"
