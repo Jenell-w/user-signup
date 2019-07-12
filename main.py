@@ -5,27 +5,21 @@ import os
 app= Flask(__name__)
 app.config['DEBUG'] = True
 
-username_error = ''
-password_error = ''
-verify_password_error = ''
-username = ''
-password = ''
-verify_password = ''
-email = ''
-email_error = ''
-
 @app.route('/')
 def display():
-  return render_template('signup-no-errors.html', username=username, password=password, 
-  verify_password=verify_password, email=email)
+  return render_template('signup-no-errors.html')
 
 @app.route("/", methods = ['POST'])
 def get_user_info():
-
   username = request.form['username']
   password = request.form['password']
   verify_password = request.form['verify_password']
   email = request.form['email']
+
+  username_error = ''
+  password_error = ''
+  verify_password_error = ''
+  email_error = ''
 
   if username == '':
     username_error = "Please enter a username"
@@ -60,11 +54,9 @@ def get_user_info():
         email = ''
     return render_template('signup.html', email_error=email_error)
 
- 
-
 @app.route("/welcome")
 def welcome():
-    username = request.args.get("username")  
+    username = request.args.get("username")
     print(username)
     return render_template('welcome.html', username=username)
 
